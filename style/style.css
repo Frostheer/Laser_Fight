@@ -1,4 +1,16 @@
-*{
+* {
     margin: 0;
     padding: 0;
+}
+
+.canva {
+    width: 1000px;
+    height: 600px;
+    background-color: aqua;
+}
+
+.container {
+    display: grid;
+    place-content: center;
+    margin-top: 2%;
 }
