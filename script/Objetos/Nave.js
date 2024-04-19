@@ -5,7 +5,7 @@ export class Nave {
     largo;
     posicion_X;
     posicion_Y;
-    
+
     constructor(posicion_X, posicion_Y, color, nombre, ancho, largo) {
         this.posicion_X = posicion_X;
         this.posicion_Y = posicion_Y;
