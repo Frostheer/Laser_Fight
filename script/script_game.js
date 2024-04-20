@@ -1,42 +1,50 @@
 import {Nave} from "./Objetos/Nave.js";
+import {NaveEnum} from "./enums/NaveEnum.js";
 
 // Referencia inicial al canvas y su respectivo contexto 2d
-var canvas = document.getElementById("myCanvas");
-var ctx = canvas.getContext("2d");
+let canvas = document.getElementById("myCanvas");
+let ctx = canvas.getContext("2d");
 
-var nave = new Nave(0,0,'green', "nave 1",10,10)
+let naveLeft = new Nave(
+    NaveEnum.POSICION_INICIAL_X_NAV_1,
+    NaveEnum.POSICION_INICIAL_Y_NAV,
+    NaveEnum.COLOR_NAV_1,
+    NaveEnum.NOMBRE_NAV_1,
+    NaveEnum.LARGO_NAV,
+    NaveEnum.ALTO_NAV)
+
+let navRight = new Nave(
+    NaveEnum.POSICION_INICIAL_X_NAV_2,
+    NaveEnum.POSICION_INICIAL_Y_NAV,
+    NaveEnum.COLOR_NAV_2,
+    NaveEnum.NOMBRE_NAV_2,
+    NaveEnum.LARGO_NAV,
+    NaveEnum.ALTO_NAV)
+
+
+let x = canvas.width / 2;
+let y = canvas.height - 30;
+
+let dx = 2;
+let dy = -2;
+
+let ballRadius = 10;
+
+let paddleHeight = 10;
+let paddleWidth = 75;
+let paddleX = (canvas.width - paddleWidth) / 2;
 
 
 
-var x = canvas.width / 2;
-var y = canvas.height - 30;
-
-var dx = 2;
-var dy = -2;
-
-var ballRadius = 10;
-
-var paddleHeight = 10;
-var paddleWidth = 75;
-var paddleX = (canvas.width - paddleWidth) / 2;
-
-
-
-function drawPlayer(){
-
+function drawPlayer(nave){
+    console.log(nave.largo, nave.ancho, nave.posicion_Y, nave.posicion_X, nave.color)
     ctx.beginPath()
-    ctx.rect(nave.posicion_X,nave.posicion_Y,nave.ancho,nave.largo)
+    ctx.rect(nave.posicion_X,nave.posicion_Y,nave.ancho, nave.alto)
     ctx.fillStyle = nave.color;
     ctx.fill();
     ctx.closePath();
 }
-function drawPaddle() {
-    ctx.beginPath();
-    ctx.rect(paddleX, canvas.height - paddleHeight, paddleWidth, paddleHeight);
-    ctx.fillStyle = "#0095DD";
-    ctx.fill();
-    ctx.closePath();
-}
+
 function drawBall() {
     ctx.beginPath();
     ctx.arc(x, y, ballRadius, 0, Math.PI * 2);
@@ -47,8 +55,11 @@ function drawBall() {
 
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    drawPlayer()
-    drawBall();
+    
+    drawPlayer(naveLeft)
+    drawPlayer(navRight)
+
+    //drawBall();
     x += dx;
     y += dy;
 
@@ -58,7 +69,6 @@ function draw() {
     if (y + dy > canvas.height - ballRadius || y + dy < ballRadius) {
         dy = -dy;
     }
-
 }
 
 setInterval(draw, 10);
