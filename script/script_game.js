@@ -6,6 +6,10 @@ import {EscenarioEnum} from "./enums/EscenarioEnum.js";
 let canvas = document.getElementById("myCanvas");
 let ctx = canvas.getContext("2d");
 
+//Codigo que carga la imagen de la nave
+const naveImage = new Image();
+naveImage.src = '../assets/nave.png';
+
 // Controles nave 1 (Izquierda)
 let botonIzquierdoNav1 = false;
 let botonDerechoNav1 = false;
@@ -135,12 +139,14 @@ function keyDownHandler(e) {
 
 }
 
-function drawPlayer(nave) {
-    ctx.beginPath()
-    ctx.rect(nave.posicion_X, nave.posicion_Y, nave.ancho, nave.alto)
-    ctx.fillStyle = nave.color;
-    ctx.fill();
-    ctx.closePath();
+function drawPlayer(nave, rotation) {
+    //Le pasas la nave y el angulo de rotacion de la imagen
+
+    ctx.save();
+    ctx.translate(nave.posicion_X + nave.ancho / 2, nave.posicion_Y + nave.alto / 2);
+    ctx.rotate(rotation);
+    ctx.drawImage(naveImage, -nave.ancho / 2, -nave.alto / 2, nave.ancho, nave.alto);
+    ctx.restore();
 }
 
 function drawBall(nave) {
@@ -173,7 +179,7 @@ function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     /*--|Jugabilidad izquierda|---------------------------------------------------------------------------------------*/
-    drawPlayer(naveLeft)
+    drawPlayer(naveLeft, Math.PI / 2)
     if (dispararIzquierda) {
         let bala = drawBall(naveLeft);
         balas.push(bala);
@@ -196,7 +202,7 @@ function draw() {
     }
 
     /*--|Jugabilidad derecha|-----------------------------------------------------------------------------------------*/
-    drawPlayer(naveRight)
+    drawPlayer(naveRight,-Math.PI / 2)
     if (dispararDerecha) {
         let bala = drawBall(naveRight);
         balas.push(bala);

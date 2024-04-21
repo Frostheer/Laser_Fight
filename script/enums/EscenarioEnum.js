@@ -3,6 +3,7 @@ export class EscenarioEnum{
     static VELOCIDAD = 2;
     static RADIO = 5;
 
+    //Tiempo de espera para los disparos
     static TIEMPO_ESPERA = 500;
 
     //Define los limites del mapa en distintas dimensiones (X e Y)
