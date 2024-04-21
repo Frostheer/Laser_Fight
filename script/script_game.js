@@ -67,28 +67,28 @@ function keyUpHandler(e) {
     }
 
     /*--|Jugabilidad izquierda|---------------------------------------------------------------------------------------*/
-    if (e.key === "a"){
+    if (e.key === "a") {
         botonIzquierdoNav1 = false;
-    }else if (e.key === "d"){
+    } else if (e.key === "d") {
         botonDerechoNav1 = false;
     }
 
-    if (e.key === "w"){
+    if (e.key === "w") {
         botonArribaNav1 = false;
-    }else if (e.key === "s"){
+    } else if (e.key === "s") {
         botonAbajoNav1 = false;
     }
 
     /*--|Jugabilidad derecha|-----------------------------------------------------------------------------------------*/
-    if (e.key === "ArrowLeft"){
+    if (e.key === "ArrowLeft") {
         botonIzquierdoNav2 = false;
-    }else if (e.key === "ArrowRight"){
+    } else if (e.key === "ArrowRight") {
         botonDerechoNav2 = false;
     }
 
-    if (e.key === "ArrowUp"){
+    if (e.key === "ArrowUp") {
         botonArribaNav2 = false;
-    }else if (e.key === "ArrowDown"){
+    } else if (e.key === "ArrowDown") {
         botonAbajoNav2 = false;
     }
 
@@ -114,28 +114,28 @@ function keyDownHandler(e) {
     }
 
     /*--|Jugabilidad izquierda|---------------------------------------------------------------------------------------*/
-    if (e.key === "a"){
+    if (e.key === "a") {
         botonIzquierdoNav1 = true;
-    }else if (e.key === "d"){
+    } else if (e.key === "d") {
         botonDerechoNav1 = true;
     }
 
-    if (e.key === "w"){
+    if (e.key === "w") {
         botonArribaNav1 = true;
-    }else if (e.key === "s"){
+    } else if (e.key === "s") {
         botonAbajoNav1 = true;
     }
 
     /*--|Jugabilidad derecha|-----------------------------------------------------------------------------------------*/
-    if (e.key === "ArrowLeft"){
+    if (e.key === "ArrowLeft") {
         botonIzquierdoNav2 = true;
-    }else if (e.key === "ArrowRight"){
+    } else if (e.key === "ArrowRight") {
         botonDerechoNav2 = true;
     }
 
-    if (e.key === "ArrowUp"){
+    if (e.key === "ArrowUp") {
         botonArribaNav2 = true;
-    }else if (e.key === "ArrowDown"){
+    } else if (e.key === "ArrowDown") {
         botonAbajoNav2 = true;
     }
 
@@ -177,88 +177,6 @@ function drawBall(nave) {
     ctx.closePath();
 }
 
-function draw() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    /*--|Jugabilidad izquierda|---------------------------------------------------------------------------------------*/
-    drawPlayer(naveLeft, Math.PI / 2)
-    if (dispararIzquierda) {
-        let bala = drawBall(naveLeft);
-        balas.push(bala);
-    }
-
-    if (botonIzquierdoNav1 && naveLeft.posicion_X > 0){
-        naveLeft.posicion_X -= NaveEnum.MOVIMIENTO_NAV_X;
-    }
-
-    if (botonDerechoNav1 && naveLeft.posicion_X < EscenarioEnum.LIMITE_MAPA_MITAD_X - NaveEnum.LARGO_NAV){
-        naveLeft.posicion_X += NaveEnum.MOVIMIENTO_NAV_X;
-    }
-
-    if (botonArribaNav1 && naveLeft.posicion_Y > 0){
-        naveLeft.posicion_Y -= NaveEnum.MOVIMIENTO_NAV_Y;
-    }
-
-    if(botonAbajoNav1 && naveLeft.posicion_Y < EscenarioEnum.LIMITE_MAPA_Y - NaveEnum.ALTO_NAV){
-        naveLeft.posicion_Y += NaveEnum.MOVIMIENTO_NAV_Y;
-    }
-
-    /*--|Jugabilidad derecha|-----------------------------------------------------------------------------------------*/
-    drawPlayer(naveRight,-Math.PI / 2)
-    if (dispararDerecha) {
-        let bala = drawBall(naveRight);
-        balas.push(bala);
-    }
-
-    if (botonIzquierdoNav2 && naveRight.posicion_X > EscenarioEnum.LIMITE_MAPA_MITAD_X){
-        naveRight.posicion_X -= NaveEnum.MOVIMIENTO_NAV_X;
-    }
-
-    if (botonDerechoNav2 && naveRight.posicion_X < EscenarioEnum.LIMITE_MAPA_X - NaveEnum.LARGO_NAV){
-        naveRight.posicion_X += NaveEnum.MOVIMIENTO_NAV_X;
-    }
-
-    if (botonArribaNav2 && naveRight.posicion_Y > 0){
-        naveRight.posicion_Y -= NaveEnum.MOVIMIENTO_NAV_Y;
-    }
-
-    if(botonAbajoNav2 && naveRight.posicion_Y < EscenarioEnum.LIMITE_MAPA_Y - NaveEnum.ALTO_NAV){
-        naveRight.posicion_Y += NaveEnum.MOVIMIENTO_NAV_Y;
-    }
-
-    // Update and draw balas
-    for (let i = 0; i < balas.length; i++) {
-        let bala = balas[i];
-        if (bala.color === "blue") {
-            bala.eje_x += bala.speed;
-        } else {
-            bala.eje_x -= bala.speed;
-        }
-
-        if (bala.color === "blue"){
-            if (detectCollision(naveRight, bala)) {
-                console.log("Se le ha dado a la nave derecha");
-
-
-            }
-        }else if (bala.color === "red"){
-            if (detectCollision(naveLeft, bala)) {
-                console.log("Se le ha dado a la nave izquierda");
-
-
-            }
-        }
-
-        ctx.beginPath();
-        ctx.arc(bala.eje_x, bala.eje_y, bala.radius, 0, Math.PI * 2);
-        ctx.fillStyle = bala.color;
-        ctx.fill();
-        ctx.closePath();
-    }
-}
-
-// Esto fue ChatGPT, no se me ocurrió con hacerlo con circulos y cuadrados.
-// Cuando son iguales no estaba complicado pero diferentes figuras de va a roma
 function detectCollision(square, circle) {
     // Calcula la distancia entre el centro del círculo y el borde del cuadrado más cercano en cada eje
     let distX = Math.abs(circle.eje_x - square.posicion_X - square.ancho / 2);
@@ -279,6 +197,92 @@ function detectCollision(square, circle) {
     let dy = distY - square.alto / 2;
     return (dx * dx + dy * dy <= (circle.radius * circle.radius));
 }
+
+function takeLifePlayer(idNave) {
+    console.log("Se le ha dado a la nave");
+    let vida = document.getElementById(idNave)
+    vida.value = vida.value - 1;
+}
+
+function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    /*--|Jugabilidad izquierda|---------------------------------------------------------------------------------------*/
+    drawPlayer(naveLeft, Math.PI / 2)
+    if (dispararIzquierda) {
+        let bala = drawBall(naveLeft);
+        balas.push(bala);
+    }
+
+    if (botonIzquierdoNav1 && naveLeft.posicion_X > 0) {
+        naveLeft.posicion_X -= NaveEnum.MOVIMIENTO_NAV_X;
+    }
+
+    if (botonDerechoNav1 && naveLeft.posicion_X < EscenarioEnum.LIMITE_MAPA_MITAD_X - NaveEnum.LARGO_NAV) {
+        naveLeft.posicion_X += NaveEnum.MOVIMIENTO_NAV_X;
+    }
+
+    if (botonArribaNav1 && naveLeft.posicion_Y > 0) {
+        naveLeft.posicion_Y -= NaveEnum.MOVIMIENTO_NAV_Y;
+    }
+
+    if (botonAbajoNav1 && naveLeft.posicion_Y < EscenarioEnum.LIMITE_MAPA_Y - NaveEnum.ALTO_NAV) {
+        naveLeft.posicion_Y += NaveEnum.MOVIMIENTO_NAV_Y;
+    }
+
+    /*--|Jugabilidad derecha|-----------------------------------------------------------------------------------------*/
+    drawPlayer(naveRight, -Math.PI / 2)
+    if (dispararDerecha) {
+        let bala = drawBall(naveRight);
+        balas.push(bala);
+    }
+
+    if (botonIzquierdoNav2 && naveRight.posicion_X > EscenarioEnum.LIMITE_MAPA_MITAD_X) {
+        naveRight.posicion_X -= NaveEnum.MOVIMIENTO_NAV_X;
+    }
+
+    if (botonDerechoNav2 && naveRight.posicion_X < EscenarioEnum.LIMITE_MAPA_X - NaveEnum.LARGO_NAV) {
+        naveRight.posicion_X += NaveEnum.MOVIMIENTO_NAV_X;
+    }
+
+    if (botonArribaNav2 && naveRight.posicion_Y > 0) {
+        naveRight.posicion_Y -= NaveEnum.MOVIMIENTO_NAV_Y;
+    }
+
+    if (botonAbajoNav2 && naveRight.posicion_Y < EscenarioEnum.LIMITE_MAPA_Y - NaveEnum.ALTO_NAV) {
+        naveRight.posicion_Y += NaveEnum.MOVIMIENTO_NAV_Y;
+    }
+
+    // Update and draw balas
+    for (let i = 0; i < balas.length; i++) {
+        let bala = balas[i];
+        if (bala.color === "blue") {
+            bala.eje_x += bala.speed;
+        } else {
+            bala.eje_x -= bala.speed;
+        }
+
+        if (bala.color === "blue") {
+            if (detectCollision(naveRight, bala)) {
+                takeLifePlayer("derecha-vida")
+            }
+        } else if (bala.color === "red") {
+            if (detectCollision(naveLeft, bala)) {
+                takeLifePlayer("izquierda-vida")
+
+            }
+        }
+
+        ctx.beginPath();
+        ctx.arc(bala.eje_x, bala.eje_y, bala.radius, 0, Math.PI * 2);
+        ctx.fillStyle = bala.color;
+        ctx.fill();
+        ctx.closePath();
+    }
+}
+
+// Esto fue ChatGPT, no se me ocurrió con hacerlo con circulos y cuadrados.
+// Cuando son iguales no estaba complicado pero diferentes figuras de va a roma
 
 
 setInterval(draw, 10);
