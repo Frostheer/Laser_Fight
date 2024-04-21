@@ -21,9 +21,12 @@ let botonAbajoNav2 = false;
 
 let dispararIzquierda;
 let dispararDerecha;
-let refrescoIzquierda = 0;
-let refrescoDerecha = 0;
-const tiempoEspera = EscenarioEnum.TIEMPO_ESPERA;
+
+let ultimoDisparoIzquierda = Date.now();
+let ultimoDisparoDerecha = Date.now();
+const tiempoEntreDisparos = EscenarioEnum.TIEMPO_ESPERA;
+
+let balas = [];
 
 let naveLeft = new Nave(
     NaveEnum.POSICION_INICIAL_X_NAV_1,
@@ -56,6 +59,7 @@ function keyUpHandler(e) {
     } else if (e.key === "-") {
         dispararDerecha = false;
     }
+
     /*--|Jugabilidad izquierda|---------------------------------------------------------------------------------------*/
     if (e.key === "a"){
         botonIzquierdoNav1 = false;
@@ -87,17 +91,20 @@ function keyUpHandler(e) {
 function keyDownHandler(e) {
 
     /*--|Manejo de disparos|---------------------------------------------------------------------------------------*/
-    const currentTime = new Date().getTime(); // Obtener el tiempo actual en milisegundos
-    if (e.key === " ") {
-        if (currentTime - refrescoIzquierda >= tiempoEspera) {
-            dispararIzquierda = true;
-            refrescoIzquierda = currentTime;
-        }
-    } else if (e.key === "-") {
-        if (currentTime - refrescoDerecha >= tiempoEspera) {
-            dispararDerecha = true;
-            refrescoDerecha = currentTime;
-        }
+    const tiempoActual = Date.now();
+
+    // Disparo para la nave izquierda con la tecla "espacio"
+    if (e.key === " " && tiempoActual - ultimoDisparoIzquierda > tiempoEntreDisparos) {
+        let bala = drawBall(naveLeft);
+        balas.push(bala);
+        ultimoDisparoIzquierda = tiempoActual;
+    }
+
+    // Disparo para la nave derecha con la tecla "-"
+    if (e.key === "-" && tiempoActual - ultimoDisparoDerecha > tiempoEntreDisparos) {
+        let bala = drawBall(naveRight);
+        balas.push(bala);
+        ultimoDisparoDerecha = tiempoActual;
     }
 
     /*--|Jugabilidad izquierda|---------------------------------------------------------------------------------------*/
@@ -127,7 +134,6 @@ function keyDownHandler(e) {
     }
 
 }
-
 
 function drawPlayer(nave) {
     ctx.beginPath()
@@ -162,9 +168,6 @@ function drawBall(nave) {
     ctx.fill();
     ctx.closePath();
 }
-
-
-let balas = [];
 
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
