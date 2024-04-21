@@ -22,4 +22,9 @@ export class NaveEnum {
     static NOMBRE_NAV_1 = "Nave izquierda"
     static NOMBRE_NAV_2 = "Nave derecha"
 
+    //Indica la velocidad de movimientod de la nave
+    //Default = 1
+    static MOVIMIENTO_NAV_X = 5;
+    static MOVIMIENTO_NAV_Y = 5;
+
 }
