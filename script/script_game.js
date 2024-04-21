@@ -178,6 +178,8 @@ function drawBall(nave) {
     ctx.closePath();
 }
 
+// Esto fue ChatGPT, no se me ocurrió con hacerlo con círculos y cuadrados.
+// Cuando son iguales no estaba complicado pero diferentes figuras de va a roma
 function detectCollision(square, circle) {
     // Calcula la distancia entre el centro del círculo y el borde del cuadrado más cercano en cada eje
     let distX = Math.abs(circle.eje_x - square.posicion_X - square.ancho / 2);
@@ -305,8 +307,7 @@ function draw() {
     }
 }
 
-// Esto fue ChatGPT, no se me ocurrió con hacerlo con círculos y cuadrados.
-// Cuando son iguales no estaba complicado pero diferentes figuras de va a roma
+
 
 
 setInterval(draw, 10);
