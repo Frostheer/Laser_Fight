@@ -1,6 +1,6 @@
 
 export class EscenarioEnum{
-    static VELOCIDAD = 2;
+    static VELOCIDAD = 4;
     static RADIO = 5;
 
     //Tiempo de espera para los disparos
