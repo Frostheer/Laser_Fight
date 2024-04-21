@@ -4,7 +4,7 @@ export class NaveEnum {
     //Atributos de posición
     static POSICION_INICIAL_X_NAV_1 = 120;
     static POSICION_INICIAL_X_NAV_2 = 850;
-    static POSICION_INICIAL_Y_NAV = 280;
+    static POSICION_INICIAL_Y_NAV = 270;
 
     //Atributos de vida
     static VIDA_NAV_1 = 5;
@@ -15,8 +15,8 @@ export class NaveEnum {
     static COLOR_NAV_2 = "red";
 
     //Atributos de tamaño
-    static ALTO_NAV = 20;
-    static LARGO_NAV = 30;
+    static ALTO_NAV = 40;
+    static LARGO_NAV = 60;
 
     //Atributos de nombre
     static NOMBRE_NAV_1 = "Nave izquierda"
@@ -26,5 +26,8 @@ export class NaveEnum {
     //Default = 1
     static MOVIMIENTO_NAV_X = 5;
     static MOVIMIENTO_NAV_Y = 5;
+
+    static NAVE_IMG = new Image().src = '../assets/nave.png';
+
 
 }

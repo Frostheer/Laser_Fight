@@ -22,14 +22,16 @@ let botonDerechoNav2 = false;
 let botonArribaNav2 = false;
 let botonAbajoNav2 = false;
 
-
+// Estado de los disparos
 let dispararIzquierda;
 let dispararDerecha;
 
+// Enfriamiento de los disparos
 let ultimoDisparoIzquierda = Date.now();
 let ultimoDisparoDerecha = Date.now();
 const tiempoEntreDisparos = EscenarioEnum.TIEMPO_ESPERA;
 
+// Coleccion de balas
 let balas = [];
 
 let naveLeft = new Nave(
@@ -38,7 +40,7 @@ let naveLeft = new Nave(
     NaveEnum.COLOR_NAV_1,
     NaveEnum.NOMBRE_NAV_1,
     NaveEnum.LARGO_NAV,
-    NaveEnum.ALTO_NAV)
+    NaveEnum.ALTO_NAV,)
 
 let naveRight = new Nave(
     NaveEnum.POSICION_INICIAL_X_NAV_2,
@@ -153,8 +155,8 @@ function drawBall(nave) {
     ctx.beginPath();
     if (nave.nombre === "Nave izquierda") {
         return {
-            eje_x: nave.posicion_X + 30,
-            eje_y: nave.posicion_Y + 10,
+            eje_x: nave.posicion_X + 50,
+            eje_y: nave.posicion_Y + 20,
             speed: EscenarioEnum.VELOCIDAD,
             radius: EscenarioEnum.RADIO,
             color: nave.color
@@ -162,8 +164,8 @@ function drawBall(nave) {
 
     } else if (nave.nombre === "Nave derecha") {
         return {
-            eje_x: nave.posicion_X,
-            eje_y: nave.posicion_Y + 10,
+            eje_x: nave.posicion_X + 10,
+            eje_y: nave.posicion_Y + 20,
             speed: EscenarioEnum.VELOCIDAD,
             radius: EscenarioEnum.RADIO,
             color: nave.color
