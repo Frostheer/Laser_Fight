@@ -5,6 +5,7 @@ import {EscenarioEnum} from "./enums/EscenarioEnum.js";
 // Referencia inicial al canvas y su respectivo contexto 2d
 let canvas = document.getElementById("myCanvas");
 let ctx = canvas.getContext("2d");
+let juegoEnCurso = true;
 
 //Código que carga la imagen de la nave
 const naveImage = new Image();
@@ -198,14 +199,29 @@ function detectCollision(square, circle) {
     return (dx * dx + dy * dy <= (circle.radius * circle.radius));
 }
 
-function takeLifePlayer(idNave) {
+function takeLifePlayer(idNave, nave) {
     console.log("Se le ha dado a la nave");
     let vida = document.getElementById(idNave)
     vida.value = vida.value - 1;
+
+    if (nave.nombre === NaveEnum.NOMBRE_NAV_1 && vida.value <= 0) {
+        return declareWinner(NaveEnum.NOMBRE_NAV_2);
+
+    } else if (nave.nombre === NaveEnum.NOMBRE_NAV_2 && vida.value <= 0) {
+        return declareWinner(NaveEnum.NOMBRE_NAV_1);
+    }
+
+}
+
+function declareWinner(nave) {
+    alert("Ah ganado " + nave)
+    return true;
 }
 
 function draw() {
+
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+
 
     /*--|Jugabilidad izquierda|---------------------------------------------------------------------------------------*/
     drawPlayer(naveLeft, Math.PI / 2)
@@ -264,12 +280,15 @@ function draw() {
 
         if (bala.color === "blue") {
             if (detectCollision(naveRight, bala)) {
-                takeLifePlayer("derecha-vida")
+                if (takeLifePlayer("derecha-vida", naveRight)) {
+                    juegoEnCurso = false;
+                }
             }
         } else if (bala.color === "red") {
             if (detectCollision(naveLeft, bala)) {
-                takeLifePlayer("izquierda-vida")
-
+                if (takeLifePlayer("izquierda-vida", naveLeft)) {
+                    juegoEnCurso = false;
+                }
             }
         }
 
@@ -278,10 +297,15 @@ function draw() {
         ctx.fillStyle = bala.color;
         ctx.fill();
         ctx.closePath();
+
+        if (!juegoEnCurso) {
+            return alert("Juego terminado");
+        }
+
     }
 }
 
-// Esto fue ChatGPT, no se me ocurrió con hacerlo con circulos y cuadrados.
+// Esto fue ChatGPT, no se me ocurrió con hacerlo con círculos y cuadrados.
 // Cuando son iguales no estaba complicado pero diferentes figuras de va a roma
 
 
