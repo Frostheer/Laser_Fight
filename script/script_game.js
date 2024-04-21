@@ -6,7 +6,7 @@ import {EscenarioEnum} from "./enums/EscenarioEnum.js";
 let canvas = document.getElementById("myCanvas");
 let ctx = canvas.getContext("2d");
 
-//Codigo que carga la imagen de la nave
+//Código que carga la imagen de la nave
 const naveImage = new Image();
 naveImage.src = '../assets/nave.png';
 
@@ -235,6 +235,20 @@ function draw() {
             bala.eje_x -= bala.speed;
         }
 
+        if (bala.color === "blue"){
+            if (detectCollision(naveRight, bala)) {
+                console.log("Se le ha dado a la nave derecha");
+
+
+            }
+        }else if (bala.color === "red"){
+            if (detectCollision(naveLeft, bala)) {
+                console.log("Se le ha dado a la nave izquierda");
+
+
+            }
+        }
+
         ctx.beginPath();
         ctx.arc(bala.eje_x, bala.eje_y, bala.radius, 0, Math.PI * 2);
         ctx.fillStyle = bala.color;
@@ -242,5 +256,29 @@ function draw() {
         ctx.closePath();
     }
 }
+
+// Esto fue ChatGPT, no se me ocurrió con hacerlo con circulos y cuadrados.
+// Cuando son iguales no estaba complicado pero diferentes figuras de va a roma
+function detectCollision(square, circle) {
+    // Calcula la distancia entre el centro del círculo y el borde del cuadrado más cercano en cada eje
+    let distX = Math.abs(circle.eje_x - square.posicion_X - square.ancho / 2);
+    let distY = Math.abs(circle.eje_y - square.posicion_Y - square.alto / 2);
+
+    // Si la distancia en ambos ejes es mayor que el radio del círculo, no hay colisión
+    if (distX > (square.ancho / 2 + circle.radius) || distY > (square.alto / 2 + circle.radius)) {
+        return false;
+    }
+
+    // Si la distancia en ambos ejes es menor o igual al radio del círculo, hay colisión
+    if (distX <= (square.ancho / 2) || distY <= (square.alto / 2)) {
+        return true;
+    }
+
+    // Comprueba la colisión en las esquinas del cuadrado
+    let dx = distX - square.ancho / 2;
+    let dy = distY - square.alto / 2;
+    return (dx * dx + dy * dy <= (circle.radius * circle.radius));
+}
+
 
 setInterval(draw, 10);
