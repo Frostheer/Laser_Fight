@@ -21,53 +21,74 @@ let navRight = new Nave(
     NaveEnum.LARGO_NAV,
     NaveEnum.ALTO_NAV)
 
+let dispararIzquierda;
+let dispararDerecha;
 
 let x = canvas.width / 2;
 let y = canvas.height - 30;
 
-let dx = 2;
-let dy = -2;
-
 let ballRadius = 10;
 
-let paddleHeight = 10;
-let paddleWidth = 75;
-let paddleX = (canvas.width - paddleWidth) / 2;
+document.addEventListener("keydown", keyDownHandler, false);
+document.addEventListener("keyup", keyUpHandler, false);
 
 
+// keyUpHandler se activa cuando generas click y keyDownHandler cuando lo sueltas,
+// por lo que está para limpiar cualquier activación
+function keyDownHandler(e) {
+    if (e.key === " ") {
+        console.log("izquierda")
+        dispararIzquierda = true;
+    } else if (e.key === "-") {
+        console.log("derecha")
+        dispararDerecha = true;
+    }
+}
 
-function drawPlayer(nave){
-    console.log(nave.largo, nave.ancho, nave.posicion_Y, nave.posicion_X, nave.color)
+function keyUpHandler(e) {
+    if (e.key === " ") {
+        dispararIzquierda = false;
+    } else if (e.key === "-") {
+        dispararDerecha = false;
+    }
+}
+
+
+function drawPlayer(nave) {
     ctx.beginPath()
-    ctx.rect(nave.posicion_X,nave.posicion_Y,nave.ancho, nave.alto)
+    ctx.rect(nave.posicion_X, nave.posicion_Y, nave.ancho, nave.alto)
     ctx.fillStyle = nave.color;
     ctx.fill();
     ctx.closePath();
 }
 
-function drawBall() {
+function drawBall(nave) {
     ctx.beginPath();
-    ctx.arc(x, y, ballRadius, 0, Math.PI * 2);
+    if (nave.nombre === "Nave izquierda") {
+        ctx.arc(nave.posicion_X + 30, nave.posicion_Y + 10, ballRadius, 0, Math.PI * 2);
+    } else if (nave.nombre === "Nave derecha") {
+        ctx.arc(nave.posicion_X, nave.posicion_Y+10, ballRadius, 0, Math.PI * 2);
+
+    }
     ctx.fillStyle = "#0095DD";
     ctx.fill();
     ctx.closePath();
 }
 
+
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    
+
+    /*--|Jugabilidad izquierda|---------------------------------------------------------------------------------------*/
     drawPlayer(naveLeft)
-    drawPlayer(navRight)
-
-    //drawBall();
-    x += dx;
-    y += dy;
-
-    if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
-        dx = -dx;
+    if (dispararIzquierda) {
+        drawBall(naveLeft)
     }
-    if (y + dy > canvas.height - ballRadius || y + dy < ballRadius) {
-        dy = -dy;
+
+    /*--|Jugabilidad derecha|-----------------------------------------------------------------------------------------*/
+    drawPlayer(navRight)
+    if (dispararDerecha) {
+        drawBall(navRight)
     }
 }
 

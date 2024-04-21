@@ -11,7 +11,7 @@ export class NaveEnum {
     static ALTO_NAV = 20;
     static LARGO_NAV = 30;
 
-    static NOMBRE_NAV_1 = "Nave 1"
-    static NOMBRE_NAV_2 = "Nave 2"
+    static NOMBRE_NAV_1 = "Nave izquierda"
+    static NOMBRE_NAV_2 = "Nave derecha"
 
 }
