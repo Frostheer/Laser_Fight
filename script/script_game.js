@@ -6,6 +6,19 @@ import {EscenarioEnum} from "./enums/EscenarioEnum.js";
 let canvas = document.getElementById("myCanvas");
 let ctx = canvas.getContext("2d");
 
+// Controles nave 1 (Izquierda)
+let botonIzquierdoNav1 = false;
+let botonDerechoNav1 = false;
+let botonArribaNav1 = false;
+let botonAbajoNav1 = false;
+
+// Controles nave 2 (Derecha)
+let botonIzquierdoNav2 = false;
+let botonDerechoNav2 = false;
+let botonArribaNav2 = false;
+let botonAbajoNav2 = false;
+
+
 let dispararIzquierda;
 let dispararDerecha;
 let refrescoIzquierda = 0;
@@ -20,7 +33,7 @@ let naveLeft = new Nave(
     NaveEnum.LARGO_NAV,
     NaveEnum.ALTO_NAV)
 
-let navRight = new Nave(
+let naveRight = new Nave(
     NaveEnum.POSICION_INICIAL_X_NAV_2,
     NaveEnum.POSICION_INICIAL_Y_NAV,
     NaveEnum.COLOR_NAV_2,
@@ -36,14 +49,44 @@ document.addEventListener("keyup", keyUpHandler, false);
 // keyUpHandler se activa cuando generas click y keyDownHandler cuando lo sueltas,
 // por lo que está para limpiar cualquier activación
 function keyUpHandler(e) {
+
+    /*--|Manejo de disparos|---------------------------------------------------------------------------------------*/
     if (e.key === " ") {
         dispararIzquierda = false;
     } else if (e.key === "-") {
         dispararDerecha = false;
     }
+    /*--|Jugabilidad izquierda|---------------------------------------------------------------------------------------*/
+    if (e.key === "a"){
+        botonIzquierdoNav1 = false;
+    }else if (e.key === "d"){
+        botonDerechoNav1 = false;
+    }
+
+    if (e.key === "w"){
+        botonArribaNav1 = false;
+    }else if (e.key === "s"){
+        botonAbajoNav1 = false;
+    }
+
+    /*--|Jugabilidad derecha|-----------------------------------------------------------------------------------------*/
+    if (e.key === "ArrowLeft"){
+        botonIzquierdoNav2 = false;
+    }else if (e.key === "ArrowRight"){
+        botonDerechoNav2 = false;
+    }
+
+    if (e.key === "ArrowUp"){
+        botonArribaNav2 = false;
+    }else if (e.key === "ArrowDown"){
+        botonAbajoNav2 = false;
+    }
+
 }
 
 function keyDownHandler(e) {
+
+    /*--|Manejo de disparos|---------------------------------------------------------------------------------------*/
     const currentTime = new Date().getTime(); // Obtener el tiempo actual en milisegundos
     if (e.key === " ") {
         if (currentTime - refrescoIzquierda >= tiempoEspera) {
@@ -56,6 +99,33 @@ function keyDownHandler(e) {
             refrescoDerecha = currentTime;
         }
     }
+
+    /*--|Jugabilidad izquierda|---------------------------------------------------------------------------------------*/
+    if (e.key === "a"){
+        botonIzquierdoNav1 = true;
+    }else if (e.key === "d"){
+        botonDerechoNav1 = true;
+    }
+
+    if (e.key === "w"){
+        botonArribaNav1 = true;
+    }else if (e.key === "s"){
+        botonAbajoNav1 = true;
+    }
+
+    /*--|Jugabilidad derecha|-----------------------------------------------------------------------------------------*/
+    if (e.key === "ArrowLeft"){
+        botonIzquierdoNav2 = true;
+    }else if (e.key === "ArrowRight"){
+        botonDerechoNav2 = true;
+    }
+
+    if (e.key === "ArrowUp"){
+        botonArribaNav2 = true;
+    }else if (e.key === "ArrowDown"){
+        botonAbajoNav2 = true;
+    }
+
 }
 
 
@@ -106,11 +176,43 @@ function draw() {
         balas.push(bala);
     }
 
+    if (botonIzquierdoNav1 && naveLeft.posicion_X > 0){
+        naveLeft.posicion_X -= NaveEnum.MOVIMIENTO_NAV_X;
+    }
+
+    if (botonDerechoNav1 && naveLeft.posicion_X < EscenarioEnum.LIMITE_MAPA_MITAD_X - NaveEnum.LARGO_NAV){
+        naveLeft.posicion_X += NaveEnum.MOVIMIENTO_NAV_X;
+    }
+
+    if (botonArribaNav1 && naveLeft.posicion_Y > 0){
+        naveLeft.posicion_Y -= NaveEnum.MOVIMIENTO_NAV_Y;
+    }
+
+    if(botonAbajoNav1 && naveLeft.posicion_Y < EscenarioEnum.LIMITE_MAPA_Y - NaveEnum.ALTO_NAV){
+        naveLeft.posicion_Y += NaveEnum.MOVIMIENTO_NAV_Y;
+    }
+
     /*--|Jugabilidad derecha|-----------------------------------------------------------------------------------------*/
-    drawPlayer(navRight)
+    drawPlayer(naveRight)
     if (dispararDerecha) {
-        let bala = drawBall(navRight);
+        let bala = drawBall(naveRight);
         balas.push(bala);
+    }
+
+    if (botonIzquierdoNav2 && naveRight.posicion_X > EscenarioEnum.LIMITE_MAPA_MITAD_X){
+        naveRight.posicion_X -= NaveEnum.MOVIMIENTO_NAV_X;
+    }
+
+    if (botonDerechoNav2 && naveRight.posicion_X < EscenarioEnum.LIMITE_MAPA_X - NaveEnum.LARGO_NAV){
+        naveRight.posicion_X += NaveEnum.MOVIMIENTO_NAV_X;
+    }
+
+    if (botonArribaNav2 && naveRight.posicion_Y > 0){
+        naveRight.posicion_Y -= NaveEnum.MOVIMIENTO_NAV_Y;
+    }
+
+    if(botonAbajoNav2 && naveRight.posicion_Y < EscenarioEnum.LIMITE_MAPA_Y - NaveEnum.ALTO_NAV){
+        naveRight.posicion_Y += NaveEnum.MOVIMIENTO_NAV_Y;
     }
 
     // Update and draw balas
