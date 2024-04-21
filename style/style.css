@@ -11,5 +11,5 @@
 .container {
     display: grid;
     place-content: center;
-    margin-top: 2%;
+    margin-top: 0.5%;
 }
