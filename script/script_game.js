@@ -1,9 +1,16 @@
 import {Nave} from "./Objetos/Nave.js";
 import {NaveEnum} from "./enums/NaveEnum.js";
+import {EscenarioEnum} from "./enums/EscenarioEnum.js";
 
 // Referencia inicial al canvas y su respectivo contexto 2d
 let canvas = document.getElementById("myCanvas");
 let ctx = canvas.getContext("2d");
+
+let dispararIzquierda;
+let dispararDerecha;
+let refrescoIzquierda = 0;
+let refrescoDerecha = 0;
+const tiempoEspera = EscenarioEnum.TIEMPO_ESPERA;
 
 let naveLeft = new Nave(
     NaveEnum.POSICION_INICIAL_X_NAV_1,
@@ -21,8 +28,6 @@ let navRight = new Nave(
     NaveEnum.LARGO_NAV,
     NaveEnum.ALTO_NAV)
 
-let dispararIzquierda;
-let dispararDerecha;
 
 document.addEventListener("keydown", keyDownHandler, false);
 document.addEventListener("keyup", keyUpHandler, false);
@@ -30,21 +35,26 @@ document.addEventListener("keyup", keyUpHandler, false);
 
 // keyUpHandler se activa cuando generas click y keyDownHandler cuando lo sueltas,
 // por lo que está para limpiar cualquier activación
-function keyDownHandler(e) {
-    if (e.key === " ") {
-        console.log("izquierda")
-        dispararIzquierda = true;
-    } else if (e.key === "-") {
-        console.log("derecha")
-        dispararDerecha = true;
-    }
-}
-
 function keyUpHandler(e) {
     if (e.key === " ") {
         dispararIzquierda = false;
     } else if (e.key === "-") {
         dispararDerecha = false;
+    }
+}
+
+function keyDownHandler(e) {
+    const currentTime = new Date().getTime(); // Obtener el tiempo actual en milisegundos
+    if (e.key === " ") {
+        if (currentTime - refrescoIzquierda >= tiempoEspera) {
+            dispararIzquierda = true;
+            refrescoIzquierda = currentTime;
+        }
+    } else if (e.key === "-") {
+        if (currentTime - refrescoDerecha >= tiempoEspera) {
+            dispararDerecha = true;
+            refrescoDerecha = currentTime;
+        }
     }
 }
 
@@ -61,19 +71,19 @@ function drawBall(nave) {
     ctx.beginPath();
     if (nave.nombre === "Nave izquierda") {
         return {
-            x: nave.posicion_X + 30,
-            y: nave.posicion_Y + 10,
-            speed: 2,
-            radius: 5,
+            eje_x: nave.posicion_X + 30,
+            eje_y: nave.posicion_Y + 10,
+            speed: EscenarioEnum.VELOCIDAD,
+            radius: EscenarioEnum.RADIO,
             color: nave.color
         }
 
     } else if (nave.nombre === "Nave derecha") {
         return {
-            x: nave.posicion_X,
-            y: nave.posicion_Y + 10,
-            speed: 2,
-            radius: 5,
+            eje_x: nave.posicion_X,
+            eje_y: nave.posicion_Y + 10,
+            speed: EscenarioEnum.VELOCIDAD,
+            radius: EscenarioEnum.RADIO,
             color: nave.color
         }
     }
@@ -106,15 +116,14 @@ function draw() {
     // Update and draw balas
     for (let i = 0; i < balas.length; i++) {
         let bala = balas[i];
-        if (bala.color === "blue"){
-            bala.x += bala.speed;
-        }else{
-            bala.x -= bala.speed;
-
+        if (bala.color === "blue") {
+            bala.eje_x += bala.speed;
+        } else {
+            bala.eje_x -= bala.speed;
         }
 
         ctx.beginPath();
-        ctx.arc(bala.x, bala.y, bala.radius, 0, Math.PI * 2);
+        ctx.arc(bala.eje_x, bala.eje_y, bala.radius, 0, Math.PI * 2);
         ctx.fillStyle = bala.color;
         ctx.fill();
         ctx.closePath();
