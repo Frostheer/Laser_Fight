@@ -24,11 +24,6 @@ let navRight = new Nave(
 let dispararIzquierda;
 let dispararDerecha;
 
-let x = canvas.width / 2;
-let y = canvas.height - 30;
-
-let ballRadius = 10;
-
 document.addEventListener("keydown", keyDownHandler, false);
 document.addEventListener("keyup", keyUpHandler, false);
 
@@ -65,16 +60,31 @@ function drawPlayer(nave) {
 function drawBall(nave) {
     ctx.beginPath();
     if (nave.nombre === "Nave izquierda") {
-        ctx.arc(nave.posicion_X + 30, nave.posicion_Y + 10, ballRadius, 0, Math.PI * 2);
-    } else if (nave.nombre === "Nave derecha") {
-        ctx.arc(nave.posicion_X, nave.posicion_Y+10, ballRadius, 0, Math.PI * 2);
+        return {
+            x: nave.posicion_X + 30,
+            y: nave.posicion_Y + 10,
+            speed: 2,
+            radius: 5,
+            color: nave.color
+        }
 
+    } else if (nave.nombre === "Nave derecha") {
+        return {
+            x: nave.posicion_X,
+            y: nave.posicion_Y + 10,
+            speed: 2,
+            radius: 5,
+            color: nave.color
+        }
     }
+
     ctx.fillStyle = "#0095DD";
     ctx.fill();
     ctx.closePath();
 }
 
+
+let balas = [];
 
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -82,13 +92,32 @@ function draw() {
     /*--|Jugabilidad izquierda|---------------------------------------------------------------------------------------*/
     drawPlayer(naveLeft)
     if (dispararIzquierda) {
-        drawBall(naveLeft)
+        let bala = drawBall(naveLeft);
+        balas.push(bala);
     }
 
     /*--|Jugabilidad derecha|-----------------------------------------------------------------------------------------*/
     drawPlayer(navRight)
     if (dispararDerecha) {
-        drawBall(navRight)
+        let bala = drawBall(navRight);
+        balas.push(bala);
+    }
+
+    // Update and draw balas
+    for (let i = 0; i < balas.length; i++) {
+        let bala = balas[i];
+        if (bala.color === "blue"){
+            bala.x += bala.speed;
+        }else{
+            bala.x -= bala.speed;
+
+        }
+
+        ctx.beginPath();
+        ctx.arc(bala.x, bala.y, bala.radius, 0, Math.PI * 2);
+        ctx.fillStyle = bala.color;
+        ctx.fill();
+        ctx.closePath();
     }
 }
 
