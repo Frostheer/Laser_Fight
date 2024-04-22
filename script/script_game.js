@@ -204,7 +204,7 @@ function detectCollision(square, circle) {
 function takeLifePlayer(idNave, nave) {
     console.log("Se le ha dado a la nave");
     let vida = document.getElementById(idNave)
-    vida.value = vida.value - 1;
+    vida.value = vida.value - NaveEnum.DAÑO_BALA;
 
     if (nave.nombre === NaveEnum.NOMBRE_NAV_1 && vida.value <= 0) {
         return declareWinner(NaveEnum.NOMBRE_NAV_2);
@@ -216,7 +216,7 @@ function takeLifePlayer(idNave, nave) {
 }
 
 function declareWinner(nave) {
-    alert("Ah ganado " + nave)
+    alert("Juego terminado, Ah ganado " + nave)
     return true;
 }
 
@@ -271,27 +271,24 @@ function draw() {
         naveRight.posicion_Y += NaveEnum.MOVIMIENTO_NAV_Y;
     }
 
-    // Update and draw balas
-    for (let i = 0; i < balas.length; i++) {
+    if (!juegoEnCurso) {
+        return;
+    }
+
+    // Actualiza y dibuja las balas, y verifica colisiones
+    for (let i = balas.length - 1; i >= 0; i--) {
         let bala = balas[i];
+
         if (bala.color === "blue") {
             bala.eje_x += bala.speed;
         } else {
             bala.eje_x -= bala.speed;
         }
 
-        if (bala.color === "blue") {
-            if (detectCollision(naveRight, bala)) {
-                if (takeLifePlayer("derecha-vida", naveRight)) {
-                    juegoEnCurso = false;
-                }
-            }
-        } else if (bala.color === "red") {
-            if (detectCollision(naveLeft, bala)) {
-                if (takeLifePlayer("izquierda-vida", naveLeft)) {
-                    juegoEnCurso = false;
-                }
-            }
+        // Verifica si la bala sale de la pantalla
+        if (bala.eje_x < 0 || bala.eje_x > canvas.width) {
+            balas.splice(i, 1);
+            continue;
         }
 
         ctx.beginPath();
@@ -300,14 +297,23 @@ function draw() {
         ctx.fill();
         ctx.closePath();
 
-        if (!juegoEnCurso) {
-            return alert("Juego terminado");
+        // Verifica las colisiones
+        if (bala.color === "blue" && detectCollision(naveRight, bala)) {
+            balas.splice(i, 1); // Elimina la bala
+            if (takeLifePlayer("derecha-vida", naveRight)) {
+                juegoEnCurso = false;
+                return;
+            }
+        } else if (bala.color === "red" && detectCollision(naveLeft, bala)) {
+            balas.splice(i, 1); // Elimina la bala
+            if (takeLifePlayer("izquierda-vida", naveLeft)) {
+                juegoEnCurso = false;
+                return;
+            }
         }
-
     }
+
+    requestAnimationFrame(draw);
 }
 
-
-
-
-setInterval(draw, 10);
+requestAnimationFrame(draw);
