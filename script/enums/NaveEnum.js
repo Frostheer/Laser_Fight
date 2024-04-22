@@ -26,4 +26,6 @@ export class NaveEnum {
     //Default = 1
     static MOVIMIENTO_NAV_X = 5;
     static MOVIMIENTO_NAV_Y = 5;
+
+    static DAÑO_BALA = 15;
 }
