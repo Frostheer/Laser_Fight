@@ -2,7 +2,7 @@ import {Nave} from "./Objetos/Nave.js";
 import {NaveEnum} from "./enums/NaveEnum.js";
 import {EscenarioEnum} from "./enums/EscenarioEnum.js";
 
-//Elemento para reproducir musica
+//Elemento para reproducir música
 const musicaFondo = document.getElementById('musica-fondo');
 musicaFondo.volume = 0.1; 
 musicaFondo.play();
@@ -209,7 +209,7 @@ function detectCollision(square, circle) {
 function takeLifePlayer(idNave, nave) {
     console.log("Se le ha dado a la nave");
     let vida = document.getElementById(idNave)
-    vida.value = vida.value - NaveEnum.DAÑO_BALA;
+    vida.value = vida.value - NaveEnum.DANNO_BALA;
 
     if (nave.nombre === NaveEnum.NOMBRE_NAV_1 && vida.value <= 0) {
         return declareWinner(NaveEnum.NOMBRE_NAV_2);
@@ -321,6 +321,5 @@ function draw() {
 
     requestAnimationFrame(draw);
 }
-
 
 requestAnimationFrame(draw);
