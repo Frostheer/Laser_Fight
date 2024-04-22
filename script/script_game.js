@@ -2,6 +2,11 @@ import {Nave} from "./Objetos/Nave.js";
 import {NaveEnum} from "./enums/NaveEnum.js";
 import {EscenarioEnum} from "./enums/EscenarioEnum.js";
 
+//Elemento para reproducir musica
+const musicaFondo = document.getElementById('musica-fondo');
+musicaFondo.volume = 0.1; 
+musicaFondo.play();
+
 // Referencia inicial al canvas y su respectivo contexto 2d
 let canvas = document.getElementById("myCanvas");
 let ctx = canvas.getContext("2d");
@@ -217,6 +222,7 @@ function takeLifePlayer(idNave, nave) {
 
 function declareWinner(nave) {
     alert("Juego terminado, Ah ganado " + nave)
+    window.location.reload();
     return true;
 }
 
@@ -315,5 +321,6 @@ function draw() {
 
     requestAnimationFrame(draw);
 }
+
 
 requestAnimationFrame(draw);

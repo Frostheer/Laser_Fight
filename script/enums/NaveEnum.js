@@ -7,8 +7,8 @@ export class NaveEnum {
     static POSICION_INICIAL_Y_NAV = 270;
 
     //Atributos de vida
-    static VIDA_NAV_1 = 5;
-    static VIDA_NAV_2 = 5;
+    static VIDA_NAV_1 = 90;
+    static VIDA_NAV_2 = 90;
 
     //Atributos de color
     static COLOR_NAV_1 = "blue";
