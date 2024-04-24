@@ -4,7 +4,7 @@ import {EscenarioEnum} from "./enums/EscenarioEnum.js";
 
 //Elemento para reproducir música
 const musicaFondo = document.getElementById('musica-fondo');
-musicaFondo.volume = 0.1; 
+musicaFondo.volume = 0.5;
 musicaFondo.play();
 
 // Referencia inicial al canvas y su respectivo contexto 2d
